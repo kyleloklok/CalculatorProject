@@ -7,7 +7,7 @@ public class Calculator {
     private static String lastInput = "";
     private static String lastAnswer = "";
 
-    public static void calculate(String in){ 
+    public static void calculate(String in){
         try{
             if(in.equals("") && !lastInput.equals("")){
                 System.out.println(lastAnswer);
@@ -117,7 +117,7 @@ public class Calculator {
         return inList;
     }
 
-    private static ArrayList<String> convertToRPN(LinkedList<String> in){ //sqrt(9)*0.5+101.783*0.7901+100 ; (8)+9
+    private static ArrayList<String> convertToRPN(LinkedList<String> in){
         ArrayList<String> rpn = new ArrayList<>();
         Stack<String> ops = new Stack<>();
         boolean sign = true;
