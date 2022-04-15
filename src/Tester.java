@@ -14,5 +14,6 @@ public class Tester{
             else Calculator.calculate(in);
         }
         System.out.println("DONE");
+
     }
 }
