@@ -80,11 +80,7 @@ public class Calculator {
                     return null;
                 }
             case "/":
-                try {/*
-                    if (val == 0) {
-                        return null;
-                    }
-                    */
+                try {
                     return in.pop() / val;
                 } catch (Exception e) {
                     return null;
