@@ -1,8 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 
 public class Calculator {
-    private static final String INPUT_ERROR = "SYNTAX ERROR: INVALID INPUT";
+    private static final String SYNTAX_ERROR = "SYNTAX ERROR: INVALID INPUT";
+    private static final String DIVISION_BY_ZERO_ERROR = "ERROR: DIVISION BY ZERO";
+    private static final String NONREAL_ANSWER_ERROR = "ERROR: NONREAL ANSWERS";
     private static String lastInput = "";
     private static String lastAnswer = "";
 
@@ -19,10 +22,9 @@ public class Calculator {
             lastAnswer = answer;
             System.out.println(answer);
         } catch(NullPointerException e){
-            System.out.println(INPUT_ERROR);
+            System.out.println(SYNTAX_ERROR);
         }
     }
-
     private static String getResult(ArrayList<String> in){
         Stack<Double> exp = new Stack<>();
         for(String token : in){
@@ -31,19 +33,21 @@ public class Calculator {
                     Double num = Double.parseDouble(token);
                     exp.push(num);
                 } catch(Exception e){
-                    return INPUT_ERROR;
+                    return SYNTAX_ERROR;
                 }
             } else {
                 try{
                     exp.push(eval(exp, token));
                 } catch(Exception e){
-                    return INPUT_ERROR;
+                    return SYNTAX_ERROR;
                 }
             }
         }
         Double answer = exp.pop();
-        if(answer == null) return INPUT_ERROR;
-        Double result = (double) Math.round(answer * 100000d) / 100000d;
+        if(answer == null) return SYNTAX_ERROR;
+        else if(answer.isInfinite()) return DIVISION_BY_ZERO_ERROR;
+        else if(answer.isNaN()) return NONREAL_ANSWER_ERROR;
+        Double result = (double) Math.round(answer * 1000000000d) / 1000000000d;
         return String.valueOf(result);
     }
 
@@ -51,6 +55,7 @@ public class Calculator {
         double val = in.pop();
         if(op.equals("sqrt")){
             try{
+                if(val < 0) return Double.NaN;
                 return Math.sqrt(val);
             } catch(Exception e){
                 return null;
@@ -76,10 +81,11 @@ public class Calculator {
                     return null;
                 }
             case "/":
-                try {
+                try {/*
                     if (val == 0) {
                         return null;
                     }
+                    */
                     return in.pop() / val;
                 } catch (Exception e) {
                     return null;
@@ -205,7 +211,7 @@ public class Calculator {
 
     private static ArrayList<String> errorMessage(ArrayList<String> in){
         in.clear();
-        in.add(INPUT_ERROR);
+        in.add(SYNTAX_ERROR);
         return in;
     }
 
